@@ -1,58 +1,71 @@
-﻿// See https://aka.ms/new-console-template for more information
-/// <summary>
-///  Top-level statements 
-///  Код програми (оператори)  вищого рівня
-/// </summary>
-///
-Console.WriteLine("Lab6 C# ");
-AnyFunc();
+﻿using User.task_1_from_Lab5_;
 
-/// <summary>
-/// 
-///  Top-level statements must precede namespace and type declarations.
-/// At the top-level methods/functions can be defined and used
-/// На верхньому рівні можна визначати та використовувати методи/функції
-/// </summary>
-void AnyFunc()
+internal class Program
 {
-    Console.WriteLine(" Some function in top-level");
-}
-Console.WriteLine("Problems 1 ");
-AnyFunc();
-//  приклад класів
-UserClass cl = new UserClass();
-cl.Name = " UserClass top-level ";
-User.UserClass cl2 = new();
-cl2.Name = " UserClass namespace User ";
-
-
-
-
-/// <summary>
-/// 
-/// Top-level statements must precede namespace and type declarations.
-/// Оператори верхнього рівня мають передувати оголошенням простору імен і типу.
-/// Створення класу(ів) або оголошенням простору імен є закіченням  іструкцій верхнього рівня
-/// 
-/// </summary>
-
-namespace User
-{
-    class UserClass
+    static void Main(string[] args)
     {
-        public string Name { get; set; }
-        public UserClass()
+        while (true)
         {
-            Name = "NoName";
-        }
-        UserClass(string n)
-        {
-            Name = n;
+            Console.WriteLine();
+            Console.WriteLine("Lab 5 - меню");
+            Console.WriteLine("4 - Task 4");
+            Console.WriteLine("3 - Task 3");
+            Console.WriteLine("2 - Task 2");
+            Console.WriteLine("1 - Task 1");
+            Console.WriteLine("0 - Вихід");
+            Console.Write("Ваш вибір: ");
+
+            string? choice = Console.ReadLine();
+
+            Console.WriteLine();
+
+            switch (choice)
+            {
+                case "3":
+                    break;
+
+                case "2":
+                    break;
+
+                case "1":
+                {
+                    // Масив інтерфейсів IShowable - поліморфізм у дії
+                    IShowable[] staff = new IShowable[]
+                    {
+                        new Engineer("Олег", "Петренко", 30, "Програміст"),
+                        new Worker("Іван", "Бойко", 45, 5),
+                        new Admin("Марія", "Коваль", 38, "HR"),
+                        new Worker("Андрій", "Авраменко", 22, 2)
+                    };
+
+                    Console.WriteLine("--- Співробітники до сортування ---");
+                    foreach (var person in staff) person.Show();
+
+                    // Сортування (потрібно привести до масиву Kadry, бо IComparable там)
+                    var sortedStaff = staff.Cast<Kadry>().ToArray();
+                    Array.Sort(sortedStaff);
+
+                    Console.WriteLine("\n--- Після сортування за прізвищем (IComparable) ---");
+                    foreach (var person in sortedStaff) person.Show();
+
+                    // Приклад клонування
+                    Kadry original = new Kadry("Віктор", "Гайсюк", 20);
+                    Kadry copy = (Kadry)original.Clone();
+                    copy.Name = "Клон Віктора";
+
+                    Console.WriteLine("\n--- Демонстрація ICloneable ---");
+                    original.Show(); Console.WriteLine();
+                    copy.Show(); Console.WriteLine();
+                }
+                    break;
+
+                case "0":
+                    return;
+
+                default:
+                    Console.WriteLine("Невірний вибір. Спробуйте ще раз.");
+                    break;
+            }
         }
     }
-
-}
-class UserClass
-{
-    public string Name { get; set; }
 }

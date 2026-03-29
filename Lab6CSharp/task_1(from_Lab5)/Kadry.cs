@@ -1,46 +1,35 @@
-public class Kadry
+using User.task_1_from_Lab5_;
+
+public class Kadry : IPerson, IShowable, IComparable, ICloneable
 {
-    protected string name;
-    protected string surname;
-    protected int age;
+    public string Name { get; set; }
+    public string Surname { get; set; }
+    public int Age { get; set; }
 
-    public Kadry()
+    public Kadry(string name, string surname, int age)
     {
-        name = "Їмʼя не вказано";
-        surname = "Прізвище не вказано";
-        age = 0;
-        Console.WriteLine("\nКонструктор Kadry (без параметрів)");
-    }
-
-    public Kadry(string Name)
-    {
-        name = Name;
-        surname = "Прізвище не вказано";
-        age = 0;
-        Console.WriteLine("\nКонструктор Kadry (1 параметр Name)");
+        Name = name;
+        Surname = surname;
+        Age = age;
     }
 
-    public Kadry(string Name, int Age)
-    {
-        name = Name;
-        age = Age;
-        surname = "";
-        Console.WriteLine("\nКонструктор Kadry (2 параметр Age)");
-    }
-    
-    public Kadry(string Name, string Surname, int Age)
-    {
-        name = Name;
-        surname = Surname;
-        age = Age;
-    }
-    
-    ~Kadry() {
-        Console.WriteLine($"<-- Виклик: Деструктор ~Kadry()\n");
-    }
-
+    // Реалізація IShowable
     public virtual void Show()
     {
-        Console.WriteLine($"Name: {name}, Surname: {surname}, Age: {age}");
+        Console.Write($"{Surname} {Name}, Вік: {Age} ");
+    }
+
+    // Реалізація IComparable (сортування за прізвищем)
+    public int CompareTo(object? obj)
+    {
+        if (obj is Kadry other)
+            return string.Compare(this.Surname, other.Surname);
+        throw new ArgumentException("Об'єкт не є Kadry");
+    }
+
+    // Реалізація ICloneable (створення копії)
+    public object Clone()
+    {
+        return new Kadry(Name, Surname, Age);
     }
 }
