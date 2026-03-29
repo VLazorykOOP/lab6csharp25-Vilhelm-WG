@@ -1,32 +1,43 @@
-namespace Lab6CSharp.task_2;
+using Lab6CSharp.task_3;
 
-// 2. Базовий абстрактний клас для уникнення дублювання коду
-public abstract class BaseEdition : IEdition
+public abstract class BaseEdition
 {
     public string Title { get; set; }
     public string AuthorSurname { get; set; }
 
     public BaseEdition(string title, string authorSurname)
     {
+        // Викидаємо наш перший кастомний виняток
+        if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(authorSurname))
+        {
+            throw new InvalidEditionDataException("Назва видання та прізвище автора не можуть бути порожніми!");
+        }
         Title = title;
         AuthorSurname = authorSurname;
     }
-
-    // Абстрактний метод, який кожен нащадок реалізує по-своєму
     public abstract void Show();
+}
 
-    // Реалізація пошуку за прізвищем автора
-    public bool IsSearched(string surname)
+public class Book : BaseEdition
+{
+    public int Year { get; set; }
+    public string Publisher { get; set; }
+
+    public Book(string title, string author, int year, string publisher) : base(title, author)
     {
-        // StringComparison.OrdinalIgnoreCase ігнорує регістр (великі/малі літери)
-        return string.Equals(AuthorSurname, surname, StringComparison.OrdinalIgnoreCase);
+        // Викидаємо наш другий кастомний виняток
+        int currentYear = DateTime.Now.Year;
+        if (year < 1440 || year > currentYear)
+        {
+            throw new InvalidEditionYearException($"Некоректний рік видання. Рік має бути між 1440 та {currentYear}.", year);
+        }
+            
+        Year = year;
+        Publisher = publisher;
     }
 
-    // Реалізація методу з інтерфейсу IComparable<IEdition> (.NET)
-    // Сортуватимемо видання за прізвищем автора за алфавітом
-    public int CompareTo(IEdition? other)
+    public override void Show()
     {
-        if (other == null) return 1;
-        return string.Compare(this.AuthorSurname, other.AuthorSurname, StringComparison.OrdinalIgnoreCase);
+        Console.WriteLine($"[КНИГА] \"{Title}\" | Автор: {AuthorSurname} | Рік: {Year} | Видавництво: {Publisher}");
     }
 }

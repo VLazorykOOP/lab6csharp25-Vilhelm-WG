@@ -1,4 +1,5 @@
 ﻿using Lab6CSharp.task_2;
+using Lab6CSharp.task_3;
 using User.task_1_from_Lab5_;
 
 internal class Program
@@ -23,30 +24,22 @@ internal class Program
             switch (choice)
             {
                 case "3":
+                    
                     break;
 
                 case "2":
                 {
-                    // Створюємо каталог (масив інтерфейсів)
-                    IEdition[] catalog = new IEdition[]
+                    // Створюємо каталог (масив BaseEdition)
+                    BaseEdition[] catalog = new BaseEdition[]
                     {
                         new Book("Тіні забутих предків", "Коцюбинський", 1911, "Час"),
-                        new ElectronicResource("C# Documentation", "Microsoft", "learn.microsoft.com",
-                            "Офіційний посібник"),
-                        new Article("Штучний інтелект у медицині", "Петренко", "Науковий вісник", 12, 2023),
+                        new Book("C# Documentation", "Microsoft", 2024, "Microsoft Press"),
+                        new Book("Штучний інтелект у медицині", "Петренко", 2023, "Науковий вісник"),
                         new Book("Кобзар", "Шевченко", 1840, "Київська друкарня"),
-                        new Article("Основи ООП", "Шевченко", "Програміст", 5, 2021)
+                        new Book("Основи ООП", "Іваненко", 2021, "Програміст")
                     };
 
                     Console.WriteLine("=== ПОВНИЙ КАТАЛОГ ВИДАНЬ ===");
-                    foreach (var item in catalog)
-                    {
-                        item.Show();
-                    }
-
-                    // Демонстрація роботи IComparable (стандартного .NET інтерфейсу)
-                    Console.WriteLine("\n=== КАТАЛОГ ПІСЛЯ СОРТУВАННЯ ЗА АВТОРОМ ===");
-                    Array.Sort(catalog);
                     foreach (var item in catalog)
                     {
                         item.Show();
@@ -63,7 +56,7 @@ internal class Program
 
                         foreach (var item in catalog)
                         {
-                            if (item.IsSearched(searchQuery))
+                            if (item.AuthorSurname.Contains(searchQuery, StringComparison.OrdinalIgnoreCase))
                             {
                                 item.Show();
                                 isFound = true;
@@ -75,6 +68,59 @@ internal class Program
                             Console.WriteLine("На жаль, видань цього автора не знайдено.");
                         }
                     }
+        
+            Console.WriteLine("=== ТЕСТУВАННЯ ОБРОБКИ ПОМИЛОК ===\n");
+
+            // Блок 1: Ловимо помилку неправильного року
+            try
+            {
+                Console.WriteLine("Спроба створити книгу з 3000 роком...");
+                Book badYearBook = new Book("Машина часу", "Уеллс", 3000, "Фантастика");
+            }
+            catch (InvalidEditionYearException ex)
+            {
+                Console.WriteLine($"[ПІЙМАЛИ КАСТОМНУ ПОМИЛКУ]: {ex.Message}");
+                Console.WriteLine($"[ДЕТАЛІ]: Ви ввели рік {ex.ErrorYear}\n");
+            }
+
+            // Блок 2: Ловимо помилку порожніх даних
+            try
+            {
+                Console.WriteLine("Спроба створити книгу без автора...");
+                Book noAuthorBook = new Book("Таємна книга", "", 2020, "Анонімне");
+            }
+            catch (InvalidEditionDataException ex)
+            {
+                Console.WriteLine($"[ПІЙМАЛИ КАСТОМНУ ПОМИЛКУ]: {ex.Message}\n");
+            }
+
+            // Блок 3: Ловимо стандартний IndexOutOfRangeException
+            try
+            {
+                Console.WriteLine("Спроба звернутися до неіснуючого елемента масиву...");
+                BaseEdition[] testcatalog = new BaseEdition[2];
+                testcatalog[0] = new Book("Кобзар", "Шевченко", 1840, "Київ");
+                testcatalog[1] = new Book("Захар Беркут", "Франко", 1883, "Львів");
+
+                // Звертаємося до 5-го елемента в масиві, де їх всього 2 (індекси 0 та 1)
+                Console.WriteLine("Хочу побачити книгу №5:");
+                catalog[5].Show(); 
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.WriteLine($"[ПІЙМАЛИ СТАНДАРТНУ ПОМИЛКУ]: Вийшли за межі масиву!");
+                Console.WriteLine($"[СИСТЕМНЕ ПОВІДОМЛЕННЯ]: {ex.Message}\n");
+            }
+            catch (Exception ex)
+            {
+                // Цей catch завжди ставиться останнім, щоб зловити будь-які інші непередбачені помилки
+                Console.WriteLine($"[НЕВІДОМА ПОМИЛКА]: {ex.Message}");
+            }
+
+            Console.WriteLine("=== ПРОГРАМА УСПІШНО ЗАВЕРШИЛА РОБОТУ (без вильоту) ===");
+        
+    
+
                 }
 
                     break;
