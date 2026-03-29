@@ -1,4 +1,5 @@
-﻿using User.task_1_from_Lab5_;
+﻿using Lab6CSharp.task_2;
+using User.task_1_from_Lab5_;
 
 internal class Program
 {
@@ -25,6 +26,57 @@ internal class Program
                     break;
 
                 case "2":
+                {
+                    // Створюємо каталог (масив інтерфейсів)
+                    IEdition[] catalog = new IEdition[]
+                    {
+                        new Book("Тіні забутих предків", "Коцюбинський", 1911, "Час"),
+                        new ElectronicResource("C# Documentation", "Microsoft", "learn.microsoft.com",
+                            "Офіційний посібник"),
+                        new Article("Штучний інтелект у медицині", "Петренко", "Науковий вісник", 12, 2023),
+                        new Book("Кобзар", "Шевченко", 1840, "Київська друкарня"),
+                        new Article("Основи ООП", "Шевченко", "Програміст", 5, 2021)
+                    };
+
+                    Console.WriteLine("=== ПОВНИЙ КАТАЛОГ ВИДАНЬ ===");
+                    foreach (var item in catalog)
+                    {
+                        item.Show();
+                    }
+
+                    // Демонстрація роботи IComparable (стандартного .NET інтерфейсу)
+                    Console.WriteLine("\n=== КАТАЛОГ ПІСЛЯ СОРТУВАННЯ ЗА АВТОРОМ ===");
+                    Array.Sort(catalog);
+                    foreach (var item in catalog)
+                    {
+                        item.Show();
+                    }
+
+                    // Організація пошуку
+                    Console.Write("\nВведіть прізвище автора для пошуку: ");
+                    string? searchQuery = Console.ReadLine();
+
+                    if (!string.IsNullOrWhiteSpace(searchQuery))
+                    {
+                        Console.WriteLine($"\n--- Результати пошуку для '{searchQuery}': ---");
+                        bool isFound = false;
+
+                        foreach (var item in catalog)
+                        {
+                            if (item.IsSearched(searchQuery))
+                            {
+                                item.Show();
+                                isFound = true;
+                            }
+                        }
+
+                        if (!isFound)
+                        {
+                            Console.WriteLine("На жаль, видань цього автора не знайдено.");
+                        }
+                    }
+                }
+
                     break;
 
                 case "1":
