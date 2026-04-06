@@ -1,5 +1,4 @@
-﻿using Lab6CSharp.task_2;
-using Lab6CSharp.task_3;
+﻿using Lab6CSharp.task_3;
 using User.task_1_from_Lab5_;
 
 internal class Program
@@ -9,7 +8,7 @@ internal class Program
         while (true)
         {
             Console.WriteLine();
-            Console.WriteLine("Lab 5 - меню");
+            Console.WriteLine("Lab 6 - меню");
             Console.WriteLine("4 - Task 4");
             Console.WriteLine("3 - Task 3");
             Console.WriteLine("2 - Task 2");
