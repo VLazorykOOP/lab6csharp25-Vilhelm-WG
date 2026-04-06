@@ -9,8 +9,6 @@ internal class Program
         {
             Console.WriteLine();
             Console.WriteLine("Lab 6 - меню");
-            Console.WriteLine("4 - Task 4");
-            Console.WriteLine("3 - Task 3");
             Console.WriteLine("2 - Task 2");
             Console.WriteLine("1 - Task 1");
             Console.WriteLine("0 - Вихід");
@@ -22,9 +20,6 @@ internal class Program
 
             switch (choice)
             {
-                case "3":
-                    
-                    break;
 
                 case "2":
                 {
